@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  * <p/>
  * This is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -15,6 +15,7 @@
  */
 package com.jitlogic.zorka.core.test.support;
 
+import com.jitlogic.netkit.test.support.TestHttpMessageClient;
 import com.jitlogic.zorka.common.test.support.CommonFixture;
 import com.jitlogic.zorka.common.test.support.TestJmx;
 import com.jitlogic.zorka.common.tracedata.TraceRecord;
@@ -38,8 +39,6 @@ import com.jitlogic.zorka.core.spy.SpyClassLookup;
 import com.jitlogic.zorka.core.spy.ltracer.LTracer;
 import com.jitlogic.zorka.core.spy.ltracer.TraceHandler;
 import com.jitlogic.zorka.core.test.spy.support.TestSpyRetransformer;
-import com.jitlogic.zorka.net.TestHttpClient;
-import com.jitlogic.zorka.net.http.mini.HttpUtil;
 import org.junit.After;
 import org.junit.Before;
 
@@ -79,7 +78,7 @@ public class ZorkaFixture extends CommonFixture {
 
     protected QueryTranslator translator;
 
-    protected TestHttpClient httpClient;
+    protected TestHttpMessageClient httpClient;
 
     protected String tmpDir;
 
@@ -147,8 +146,7 @@ public class ZorkaFixture extends CommonFixture {
         ZorkaUtil.rmrf(tmpDir);
         assertTrue(new File(tmpDir).mkdirs());
 
-        httpClient = new TestHttpClient();
-        ObjectInspector.setField(HttpUtil.class, "client", httpClient);
+        httpClient = new TestHttpMessageClient();
 
         SpyClassLookup.INSTANCE = new SpyClassLookup();
     }

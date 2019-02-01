@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  *
  * ZORKA is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.net.Socket;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -939,4 +940,15 @@ public class ZorkaUtil {
             }
         }
     }
+
+    public static void close(Socket obj) {
+        if (obj != null) {
+            try {
+                obj.close();
+            } catch (IOException e) {
+                log.warn("Cannot close", e);
+            }
+        }
+    }
+
 }

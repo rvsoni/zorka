@@ -1,5 +1,5 @@
 /**
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  *
  * ZORKA is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -144,6 +144,7 @@ __jvm() {
   _trace_enabled = zorka.boolCfg("tracer");
 
   if (zorka.boolCfg("jvm.httpclient.trace", false)) {
+    zorka.require("tracer.bsh");
     spy.add(spy.instrument("SUN_HTTP_CLIENT_CONNECT")
       .onEnter(spy.fetchArg("THIS", 0),
         _trace_enabled ? tracer.begin("HTTP_CLI") : null,
@@ -162,6 +163,63 @@ __jvm() {
     // TODO input headers cannot be fetched from connect()/plainConnect0() as it forces client to fetch results
     //      before sending POST data;
   }
+
+  __thread() {
+
+    zorka.logInfo("Enabling Zorka thread monitoring.");
+
+    __cpu() {
+
+      lister = perfmon.threadRankLister();
+      list1  = perfmon.rankList(lister, 64, 0, 1, 55000);
+      list5  = perfmon.rankList(lister, 64, 0, 2, 55000);
+      list15 = perfmon.rankList(lister, 64, 0, 3, 55000);
+
+      util1(nth) {
+        itm = list1.get(nth);
+        if (itm == null) return 0.0;
+        return itm.getAverage(System.currentTimeMillis(), 0, 1);
+      }
+
+      util5(nth) {
+        itm = list2.get(nth);
+        if (itm == null) return 0.0;
+        return itm.getAverage(System.currentTimeMillis(), 0, 2);
+      }
+
+      util15(nth) {
+        itm = list3.get(nth);
+        if (itm == null) return 0.0;
+        return itm.getAverage(System.currentTimeMillis(), 0, 3);
+      }
+
+      name1(nth) {
+        itm = list1.get(nth);
+        if (itm == null) return "";
+        return itm.getName();
+      }
+
+      name5(nth) {
+        itm = list2.get(nth);
+        if (itm == null) return "";
+        return itm.getName();
+      }
+
+      name15(nth) {
+        itm = list3.get(nth);
+        if (itm == null) return "";
+        return itm.getName();
+      }
+
+      return this;
+    }
+
+    cpu = __cpu();
+
+    return this;
+  }
+
+  thread = zorka.boolCfg("jvm.thread.monitor", false) ? __thread() : null;
 
   if (zorka.boolCfg("zorka.mbs.autoregister", false)) {
     autoregister();

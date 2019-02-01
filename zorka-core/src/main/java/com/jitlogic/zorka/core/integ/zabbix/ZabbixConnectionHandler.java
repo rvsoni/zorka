@@ -1,6 +1,6 @@
 /*
  * Copyright 2014 Daniel Makoto Iguchi <daniel.iguchi@gmail.com>
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  * <p/>
  * This is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -20,7 +20,7 @@ package com.jitlogic.zorka.core.integ.zabbix;
 import com.jitlogic.zorka.common.util.ZorkaUtil;
 import com.jitlogic.zorka.core.ZorkaBshAgent;
 import com.jitlogic.zorka.core.integ.QueryTranslator;
-import com.jitlogic.zorka.net.TcpSessionFactory;
+import com.jitlogic.zorka.core.integ.TcpSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

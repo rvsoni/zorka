@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  * 
  * ZORKA is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -75,8 +75,13 @@ public class ZabbixAgentUnitTest {
 	@Test
 	public void testParseBinaryRequests() throws Exception {
 		assertEquals("abc", ZabbixRequestHandler.decode(mkIS("abc")));
-		InputStream is = mkIS("ZBXD", 1, 0x0c, 0,0,0,0,0,0,0, "system.load", 0x0a); 
+
+		// This should be parsable by in both old LF-termiating and standard mode.
+		InputStream is = mkIS("ZBXD", 1, 0x0b, 0,0,0,0,0,0,0, "system.load", 0x0a);
 		assertEquals("system.load", ZabbixRequestHandler.decode(is));
-		// TODO dotestować graniczne przypadki 
+
+		// Check if header and length field is really honoured
+		InputStream is1 = mkIS("ZBXD", 1, 0x0b, 0,0,0,0,0,0,0, "system.loadxxx");
+		assertEquals("system.load", ZabbixRequestHandler.decode(is1));
 	}
 }

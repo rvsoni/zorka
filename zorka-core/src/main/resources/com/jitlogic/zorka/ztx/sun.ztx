@@ -20,6 +20,8 @@ sun.misc
   multByPow52|(II)Lsun/misc/FDBigInteger;
   rightInplaceSub|(Lsun/misc/FDBigInteger;)Lsun/misc/FDBigInteger;
   valueOfMulPow52|(JII)Lsun/misc/FDBigInteger;
+ FormattedFloatingDecimal
+  getChars|([C)I
  FpUtils
   getExponent|(D)I
  ProxyGenerator$ConstantPool
@@ -28,7 +30,18 @@ sun.misc
   write|(Ljava/io/DataOutputStream;)V
  ProxyGenerator$ConstantPool$ValueEntry
   write|(Ljava/io/DataOutputStream;)V
-sun.net|DefaultProgressMeteringPolicy|shouldMeterInput|(Ljava/net/URL;Ljava/lang/String;)Z
+sun.net
+ DefaultProgressMeteringPolicy
+  shouldMeterInput|(Ljava/net/URL;Ljava/lang/String;)Z
+ NetProperties
+  get|(Ljava/lang/String;)Ljava/lang/String;
+ ResourceManager
+  afterUdpClose|()V
+sun.net.spi
+ DefaultProxySelector$3
+  run
+   ()Ljava/lang/Object;
+   ()Ljava/net/Proxy;
 sun.net.www|MeteredStream|read|([BII)I
 sun.net.www.http
  ChunkedInputStream
@@ -67,10 +80,15 @@ sun.nio.ch
  EPollSelectorImpl
   putEventOps|(Lsun/nio/ch/SelectionKeyImpl;I)V
   wakeup|()Ljava/nio/channels/Selector;
+ EPollSelectorProvider
+  openSelector|()Ljava/nio/channels/spi/AbstractSelector;
  FileChannelImpl
   read|(Ljava/nio/ByteBuffer;)I
   write|(Ljava/nio/ByteBuffer;)I
+ FileChannelImpl$Unmapper
+  run|()V
  IOStatus
+  checkAll|(J)Z
   normalize
    (I)I
    (J)J
@@ -80,15 +98,44 @@ sun.nio.ch
  SelectorImpl
   select|(J)I
   selectedKeys|()Ljava/util/Set;
+ SelectorProviderImpl
+  openSocketChannel|()Ljava/nio/channels/SocketChannel;
+ SocketAdaptor
+  create|(Lsun/nio/ch/SocketChannelImpl;)Ljava/net/Socket;
+ SocketChannelImpl
+  connect|(Ljava/net/SocketAddress;)Z
+  finishConnect|()Z
+  kill|()V
+  options|()Lsun/nio/ch/SocketOpts;
+  socket|()Ljava/net/Socket;
+ SocketOptsImpl
+  keepAlive|(Z)Lsun/nio/ch/SocketOpts;
+  receiveBufferSize|(I)Lsun/nio/ch/SocketOpts;
+  sendBufferSize
+   ()I
+   (I)Lsun/nio/ch/SocketOpts;
+ SocketOptsImpl$IP$TCP
+  noDelay|(Z)Lsun/nio/ch/SocketOpts$IP$TCP;
  Util
   getTemporaryDirectBuffer|(I)Ljava/nio/ByteBuffer;
+  releaseTemporaryDirectBuffer|(Ljava/nio/ByteBuffer;)V
  Util$3
   iterator|()Ljava/util/Iterator;
+ Util$5
+  run|()Ljava/lang/Object;
 sun.nio.cs
  ISO_8859_1$Decoder
   decode|([BII[C)I
  ISO_8859_1$Encoder
   encode|([CII[B)I
+ MS1250
+  newDecoder|()Ljava/nio/charset/CharsetDecoder;
+ MS1252
+  newEncoder|()Ljava/nio/charset/CharsetEncoder;
+ SingleByte$Decoder
+  decode
+   (I)C
+   ([BII[C)I
  Surrogate
   is|(I)Z
  ThreadLocalCoders
@@ -111,11 +158,38 @@ sun.security.provider
   identities|()Ljava/util/Enumeration;
  PolicyFile$8
   run|()Ljava/lang/Object;
+ SecureRandom
+  engineNextBytes|([B)V
+sun.security.ssl
+ AppInputStream
+  read|([BII)I
+ AppOutputStream
+  write|([BII)V
+ HandshakeInStream
+  read|()I
+ InputRecord
+  close|()V
+ OutputRecord
+  reset|()V
+ ProtocolVersion
+  compareTo
+   (Ljava/lang/Object;)I
+   (Lsun/security/ssl/ProtocolVersion;)I
+ SSLAlgorithmConstraints
+  permits|(Ljava/util/Set;Ljava/lang/String;Ljava/security/AlgorithmParameters;)Z
+ SSLAlgorithmDecomposer
+  decompose|(Ljava/lang/String;)Ljava/util/Set;
+ SSLSessionImpl
+  invalidate|()V
+ SSLSocketImpl
+  close|()V
 sun.security.util
  DerInputStream
   available|()I
  DerValue
   isPrintableStringChar|(C)Z
+ KeyUtil
+  getKeySize|(Ljava/security/AlgorithmParameters;)I
  ManifestEntryVerifier
   update
    (B)V
@@ -171,6 +245,7 @@ sun.util
   nextElement
    ()Ljava/lang/Object;
    ()Ljava/lang/String;
+sun.util.calendar|JulianCalendar|getFixedDate|(IIILsun/util/calendar/BaseCalendar$Date;)J
 sun.util.logging
  LoggingSupport
   isLoggable|(Ljava/lang/Object;Ljava/lang/Object;)Z

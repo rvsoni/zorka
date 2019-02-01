@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2018 Rafał Lewczuk All Rights Reserved.
+ * Copyright (c) 2012-2019 Rafał Lewczuk All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -84,7 +84,7 @@ public abstract class AbstractMetricPushOutput implements ZorkaSubmitter<Symboli
             if (ps.matches("\\d+")) {
                 chunkSize = Integer.parseInt(ps);
             } else {
-                log.error("Invalid value of opentsdb.chunk.size: '" + ps + "' (should be integer)");
+                log.error("Invalid value of *.chunk.size: '" + ps + "' (should be integer)");
             }
         }
 

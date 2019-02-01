@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  * <p/>
  * This is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -88,7 +88,7 @@ public class SpyClassVisitor extends ClassVisitor {
      */
     public SpyClassVisitor(SpyClassTransformer transformer, ClassLoader classLoader, SymbolRegistry symbolRegistry,
                            String className, List<SpyDefinition> sdefs, Tracer tracer, ClassVisitor cv) {
-        super(Opcodes.ASM6, cv);
+        super(Opcodes.ASM7, cv);
         this.transformer = transformer;
         this.classLoader = classLoader;
         this.symbolRegistry = symbolRegistry;

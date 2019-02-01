@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  *
  * ZORKA is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -128,13 +128,7 @@ public class ZorkaConfig {
         } catch (IOException e) {
             log.error("Error loading property file", e);
         } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    log.error("Error closing property file", e);
-                }
-            }
+            ZorkaUtil.close(is);
         }
 
         return props;
@@ -149,17 +143,10 @@ public class ZorkaConfig {
             return properties;
         } catch (IOException e) {
             if (verbose) {
-                log.error("Error loading property file", e);
+                log.error("Error loading property file: " + propPath, e);
             }
         } finally {
-            if (is != null)
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    if (verbose) {
-                        log.error("Error closing property file", e);
-                    }
-                }
+            ZorkaUtil.close(is);
         }
 
         return null;
@@ -349,6 +336,23 @@ public class ZorkaConfig {
     public static String parseStr(String val, Pattern regex, String defVal, String msg) {
         if (val != null && (regex == null || regex.matcher(val).matches())) {
             return val;
+        } else if (defVal != null) {
+            return defVal;
+        } else {
+            throw new ZorkaConfigException(msg, null);
+        }
+    }
+
+    public static boolean parseBool(String val, Boolean defVal, String msg) {
+
+        if (val != null) {
+          if ("yes".equalsIgnoreCase(val) || "true".equals(val)) {
+              return true;
+          } else if ("no".equalsIgnoreCase(val) || "false".equals(val)) {
+              return false;
+          } else {
+              throw new ZorkaConfigException(msg, null);
+          }
         } else if (defVal != null) {
             return defVal;
         } else {

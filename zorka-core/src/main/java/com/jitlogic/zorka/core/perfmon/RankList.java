@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  * <p/>
  * This is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -147,7 +147,7 @@ public class RankList<T extends Rankable<?>> implements RankLister<T> {
      *
      * @param tstamp current time
      */
-    private void rerank(final long tstamp) {
+    private synchronized void rerank(final long tstamp) {
 
         List<T> lst;
 

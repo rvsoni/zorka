@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  *
  * ZORKA is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -720,56 +720,6 @@ public class ZorkaLib implements ZorkaService {
 
     public MethodCallStatistics registerZorkaStats(String mbsName, String beanName, String attrName, String desc) {
         return mbsRegistry.getOrRegister(mbsName, beanName, attrName, new MethodCallStatistics(), desc);
-    }
-
-    /**
-     * Creates JMX lister object that can be used to create rankings
-     *
-     * @param mbsName mbean server name
-     * @param onMask  object name (or mask)
-     * @param <T>     wrapped object type (if any)
-     * @return JMX rank lister object
-     */
-    public <T extends Rankable<?>> RankLister<T> jmxLister(String mbsName, String onMask) {
-        JmxAggregatingLister<T> lister = new JmxAggregatingLister<T>(mbsRegistry, mbsName, onMask);
-        return lister;
-    }
-
-
-    /**
-     * Thread rank lister (if it has been created)
-     */
-    private ThreadRankLister threadRankLister;
-
-
-    /**
-     * Returns thread rank lister. Creates and starts a new one if none has been creater (yet).
-     * As thread lister causes some stress on JVM, it is a singleton object and it is created in lazy manner.
-     *
-     * @return thread rank lister object
-     */
-    public synchronized ThreadRankLister threadRankLister() {
-        if (threadRankLister == null) {
-            threadRankLister = new ThreadRankLister(mbsRegistry);
-            scheduler.schedule(threadRankLister, 15000, 0);
-        }
-
-        return threadRankLister;
-    }
-
-    /**
-     * Creates EJB rank lister object that can be used to create rankings.
-     * It will list EJB statistics from selected mbeans.
-     *
-     * @param mbsName  mbean server name
-     * @param objNames object names
-     * @param attr     attribute name
-     * @return EJB rank lister object
-     */
-    public EjbRankLister ejbRankLister(String mbsName, String objNames, String attr) {
-        EjbRankLister lister = new EjbRankLister(mbsRegistry, mbsName, objNames, attr);
-        scheduler.schedule(lister, 15000, 0);
-        return lister;
     }
 
 

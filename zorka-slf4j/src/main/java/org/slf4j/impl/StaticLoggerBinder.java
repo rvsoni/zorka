@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  * <p/>
  * This is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -15,7 +15,6 @@
  */
 package org.slf4j.impl;
 
-import org.slf4j.ILoggerFactory;
 import org.slf4j.spi.LoggerFactoryBinder;
 
 public class StaticLoggerBinder implements LoggerFactoryBinder {
@@ -31,7 +30,7 @@ public class StaticLoggerBinder implements LoggerFactoryBinder {
     private static final String LOGGER_FACTORY_CLASS_NAME = ZorkaLoggerFactory.class.getName();
 
     @Override
-    public ILoggerFactory getLoggerFactory() {
+    public ZorkaLoggerFactory getLoggerFactory() {
         return ZorkaLoggerFactory.getInstance();
     }
 

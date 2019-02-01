@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  * <p/>
  * This is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -167,7 +167,7 @@ public class SpyMethodVisitor extends MethodVisitor {
                             String className, List<String> superclasses, List<String> classAnnotations, List<String> classInterfaces,
                             int access, String methodName, String methodSignature,
                             List<SpyContext> ctxs, MethodVisitor mv) {
-        super(Opcodes.ASM6, mv);
+        super(Opcodes.ASM7, mv);
         this.matches = matches;
         this.symbolRegistry = symbolRegistry;
         this.className = className;

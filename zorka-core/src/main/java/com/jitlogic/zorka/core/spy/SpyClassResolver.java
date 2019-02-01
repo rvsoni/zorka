@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2018 Rafał Lewczuk All Rights Reserved.
+ * Copyright (c) 2012-2019 Rafał Lewczuk All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,6 +63,12 @@ public class SpyClassResolver {
         CachedClassInfo ci1 = getClassInfo(loader, type1), ci2 = getClassInfo(loader, type2);
 
         CachedClassInfo rslt = null;
+
+        if (ci1 == null || ci2 == null) {
+            log.warn("Either class was not loaded nor visible in classloader path. Returning 'java.lang.Object' as common supertype: " +
+                    type1 + ", " + type2);
+            return OBJECT_CLAZZ;
+        }
 
         if (!ci1.isInterface() && !ci2.isInterface()) {
             // Both are classes

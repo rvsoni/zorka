@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  *
  * ZORKA is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -23,10 +23,6 @@ zorka.defCfg("nagios", "no");
 zorka.defCfg("zabbix", "yes");
 zorka.defCfg("zabbix.active", "yes");
 
-zorka.defCfg("influxdb", "no");
-zorka.defCfg("opentsdb", "no");
-zorka.defCfg("graphite", "no");
-zorka.defCfg("prometheus.push", "no");
 
 if (zorka.boolCfg("zabbix") || zorka.boolCfg("zabbix.active")) {
   zorka.require("zabbix.bsh");
@@ -43,6 +39,7 @@ if (zorka.boolCfg("nagios")) {
 if (zorka.boolCfg("influxdb") ||
     zorka.boolCfg("opentsdb") ||
     zorka.boolCfg("graphite") ||
+    zorka.boolCfg("prometheus") ||
     zorka.boolCfg("prometheus.push")) {
   zorka.require("metrics.bsh");
 }

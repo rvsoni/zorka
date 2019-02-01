@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  * <p/>
  * This is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -81,20 +81,24 @@ public class ZtxProcCommand {
         for (int i = 1; i < args.length-1; i++) {
             if ("-o".equals(args[i])) {
                 outf = new File(args[i+1]);
+                i++;
             }
             if ("-f".equals(args[i])) {
                 File f = new File(args[i+1]);
+                i++;
                 if (!f.isFile()) {
                     err.println("No such input file: " + f);
-                    return;
+                    System.exit(1);
                 }
                 inpf.add(f);
             }
             if ("-i".equals(args[i])) {
                 incls.add(pattern(args[i+1]));
+                i++;
             }
             if ("-x".equals(args[i])) {
                 excls.add(pattern(args[i+1]));
+                i++;
             }
         }
 

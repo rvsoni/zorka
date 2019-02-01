@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  * <p/>
  * This is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 import static org.slf4j.spi.LocationAwareLogger.*;
 
-public class ZorkaTrapperLogger extends MarkerIgnoringBase {
+public class ZorkaTrapperLogger extends MarkerIgnoringBase implements ZorkaLoggerInput {
 
     private volatile int logLevel;
     private volatile ZorkaTrapper trapper;
@@ -38,10 +38,12 @@ public class ZorkaTrapperLogger extends MarkerIgnoringBase {
         return logLevel;
     }
 
+    @Override
     public synchronized void setLogLevel(int logLevel) {
         this.logLevel = logLevel;
     }
 
+    @Override
     public synchronized void setTrapper(ZorkaTrapper trapper) {
         this.trapper = trapper;
     }

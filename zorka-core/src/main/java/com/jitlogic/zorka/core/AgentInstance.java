@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  * <p/>
  * This is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -38,8 +38,8 @@ import com.jitlogic.zorka.core.spy.stracer.STracerLib;
 import com.jitlogic.zorka.core.spy.tuner.TracerTuner;
 import com.jitlogic.zorka.core.spy.tuner.ZtxMatcherSet;
 import com.jitlogic.zorka.core.util.DaemonThreadFactory;
-import com.jitlogic.zorka.net.TcpService;
-import com.jitlogic.zorka.net.TcpSessionFactory;
+import com.jitlogic.zorka.core.integ.TcpService;
+import com.jitlogic.zorka.core.integ.TcpSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -175,6 +175,10 @@ public class AgentInstance implements ZorkaService {
     private STraceBufManager bufManager;
 
     private SpyStateShelfSet spyStateShelfSet;
+
+    private HttpService httpService;
+
+    private HttpService httpsService;
 
     public AgentInstance(AgentConfig config, SpyRetransformer retransformer) {
         this.config = config;
@@ -554,7 +558,8 @@ public class AgentInstance implements ZorkaService {
     public synchronized PerfMonLib getPerfMonLib() {
 
         if (perfMonLib == null) {
-            perfMonLib = new PerfMonLib(getSymbolRegistry(), getMetricsRegistry(), getTracer(), getMBeanServerRegistry());
+            perfMonLib = new PerfMonLib(getSymbolRegistry(), getMetricsRegistry(),
+                    getTracer(), getMBeanServerRegistry(), getZorkaLib());
         }
 
         return perfMonLib;
@@ -572,7 +577,7 @@ public class AgentInstance implements ZorkaService {
      *
      * @return mbean server registry reference of null (if not yet initialized)
      */
-    public MBeanServerRegistry getMBeanServerRegistry() {
+    public synchronized MBeanServerRegistry getMBeanServerRegistry() {
 
         if (mBeanServerRegistry == null) {
             mBeanServerRegistry = new MBeanServerRegistry();
@@ -581,9 +586,34 @@ public class AgentInstance implements ZorkaService {
         return mBeanServerRegistry;
     }
 
+    /**
+     * Returns built-in HTTP server. If zorka.http = no, will always return null.
+     *
+     */
+    public synchronized HttpService getHttpService() {
+        if (httpService == null && config.boolCfg("zorka.http", false)) {
+            httpService = new HttpService("http",
+                    config.mapCfg("zorka.http", "tls", "no"));
+            httpService.start();
+        }
+        return httpService;
+    }
+
+    /**
+     * Returns built-in HTTPS server. If zorka.http = no, will always return null.
+     */
+    public synchronized HttpService getHttpsService() {
+        if (httpsService == null && config.boolCfg("zorka.https", false)) {
+            httpsService = new HttpService("https",
+                    config.mapCfg("zorka.https", "tls", "yes"));
+            httpsService.start();
+        }
+        return httpsService;
+    }
+
 
     @Override
-    public void shutdown() {
+    public synchronized void shutdown() {
 
         log.info("Shutting down agent ...");
 
@@ -616,6 +646,14 @@ public class AgentInstance implements ZorkaService {
 
         if (nagiosAgent != null) {
             nagiosAgent.shutdown();
+        }
+
+        if (httpService != null) {
+            httpService.shutdown();
+        }
+
+        if (httpsService != null) {
+            httpsService.shutdown();
         }
     }
 

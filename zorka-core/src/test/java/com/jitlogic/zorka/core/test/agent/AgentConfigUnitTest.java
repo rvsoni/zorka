@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
+ * Copyright 2012-2019 Rafal Lewczuk <rafal.lewczuk@jitlogic.com>
  * <p/>
  * This is free software. You can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -17,11 +17,13 @@
 package com.jitlogic.zorka.core.test.agent;
 
 import com.jitlogic.zorka.common.util.ZorkaUtil;
+import com.jitlogic.zorka.core.AgentConfig;
 import com.jitlogic.zorka.core.test.support.ZorkaFixture;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -145,4 +147,15 @@ public class AgentConfigUnitTest extends ZorkaFixture {
             ZorkaUtil.map("a", "1", "b", "2", "c", "3", "d", "4"),
             config.mapCfg("test.map", "c", "5", "d", "4"));
     }
+
+    @Test
+    public void testStartAndIncludeProperties() throws Exception {
+        URL url = getClass().getResource("/cfgp");
+        AgentConfig config = new AgentConfig(url.getPath());
+        assertEquals("foo", config.stringCfg("some.prop", null));
+        assertEquals("bar", config.stringCfg("other.prop", null));
+        assertEquals("baz", config.stringCfg("another.prop", null));
+    }
+
+
 }
